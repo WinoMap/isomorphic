@@ -5,10 +5,18 @@ import { connect } from 'react-redux';
 import { createD3Chart, updateD3Chart } from './d3Chart';
 import * as actionCreators from '../actions/MapActions';
 
-@connect(state => ({
+
+function mapStateToProps(state) {
+  return {
     winos: state.get('winos'),
     options: state.get('options'),
-    event: state.get('event') }))
+    event: state.get('event') };
+}
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 
 export default class Home extends React.Component {
   componentDidMount() {

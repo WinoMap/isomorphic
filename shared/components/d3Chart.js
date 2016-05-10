@@ -12,6 +12,8 @@ const COLORS = ['red','blue','green','pink','orange','yellow'];
 
 // d3Chart.js
 export const createD3Chart = function(el, props, state) {
+  console.log("--- State ---");
+  console.log(state);
 
 
   //Initialise the svg element
@@ -40,9 +42,10 @@ export const createD3Chart = function(el, props, state) {
   function mouseClick() {
   }
 
+  const backgroundPlan = require('../res/planC.svg');
   //Draw the elements here
   $(function(){
-    $("#inside").load("./res/planC.svg", function(){
+    $("#inside").load(backgroundPlan, function(){
       d3.select('#inside').append('g').attr('class', 'main');
       d3.select('#inside').append('g').attr('class', 'anchor');
       d3.select('#inside').append('g').attr('class', 'areaInner');
@@ -272,7 +275,7 @@ function manageAnchors(state){
   for(var key in state.mainWinos){
     intersectList.push({id: state.mainWinos[key].get('id'), inter: generateIntersections(intersectionDatas[state.mainWinos[key].get('id')])});
   }
-  manageIntersections(intersectList);
+  //manageIntersections(intersectList);
 
   //Manages the anchor winos after the circles so we can click on it
   var g = d3.select('#inside').selectAll('.anchor');
@@ -331,11 +334,11 @@ function manageIntersections(intersectionPoints){
 * Manage the Z-index of the elements to make the ones behind clickable
 */
 function managePriority(state){
-  /*for(var key in state.mainWinos){
+  for(var key in state.mainWinos){
     const wino = state.mainWinos[key];
     var sel = d3.select(".main"+wino.get('id'))
     sel.moveToFront();
-  }*/
+  }
 }
 
 /** Generate the intersections data for given circles data
@@ -426,18 +429,18 @@ function intersection(x0, y0, r0, x1, y1, r1) {
 
 /**
 * Allow to count D3 selections
-*
+*/
 d3.selection.prototype.size = function() {
   var n = 0;
   this.each(function() { ++n; });
   return n;
-};*/
+};
 
 /**
 * Allow to move a d3 element to front
-*
+*/
 d3.selection.prototype.moveToFront = function() {
   return this.each(function(){
     this.parentNode.appendChild(this);
   });
-};*/
+};
