@@ -329,11 +329,11 @@ function manageIntersections(intersectionPoints){
 * Manage the Z-index of the elements to make the ones behind clickable
 */
 function managePriority(state){
-  for(var key in state.mainWinos){
+  /*for(var key in state.mainWinos){
     const wino = state.mainWinos[key];
     var sel = d3.select(".main"+wino.get('id'))
     sel.moveToFront();
-  }
+  }*/
 }
 
 /** Generate the intersections data for given circles data
@@ -424,18 +424,18 @@ function intersection(x0, y0, r0, x1, y1, r1) {
 
 /**
 * Allow to count D3 selections
-*/
+*
 d3.selection.prototype.size = function() {
   var n = 0;
   this.each(function() { ++n; });
   return n;
-};
+};*/
 
 /**
 * Allow to move a d3 element to front
-*/
+*
 d3.selection.prototype.moveToFront = function() {
   return this.each(function(){
     this.parentNode.appendChild(this);
   });
-};
+};*/

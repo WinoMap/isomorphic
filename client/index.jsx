@@ -2,10 +2,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
-import routes from 'routes';
+import routes from '../shared/routes';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import * as reducers from 'reducers';
+import reducers from '../shared/reducers/MapReducer';
 import { fromJS } from 'immutable';
 
 const history = createBrowserHistory();

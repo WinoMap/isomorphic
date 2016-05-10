@@ -1,7 +1,7 @@
 import {Map, List} from 'immutable';
 import {setWinos, addWino, delWino, moveWino, setMainWino, setAnchorWino,
 togglePrecision, setScale, setOptions, apiRequest,
-setEvent, setEventData, eventStart } from './WinoCore';
+setEvent, setEventData, eventStart } from './winoCore';
 
 function winos(state = List(), action, optionState){
   switch(action.type){
