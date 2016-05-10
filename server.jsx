@@ -6,15 +6,38 @@ import createLocation from 'history/lib/createLocation';
 import routes from './shared/routes';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import reducers from './shared/reducers/mapReducer';
+import reducer from './shared/reducers/mapReducer';
+import {Map, List} from 'immutable';
 
 
 const app = express();
 app.use((req, res) => {
   const location = createLocation(req.url);
-  const reducer  = combineReducers(reducers);
-  const store    = createStore(reducer);
+  const store = createStore(reducer);
+
+  var winos = List.of(
+  Map({
+    id: 1,
+    x:0,
+    y:1,
+    radius: Map({2: 5}),
+    main: false
+  }),
+  Map({
+    id: 2,
+    x:4,
+    y:0,
+    radius: Map({1: 5}),
+    main: true
+  }));
   
+  store.dispatch({
+    type: 'SET_WINOS',
+    winos: winos
+  });
+
+  console.log('test');
+
   match({ routes, location }, (err, redirectLocation, renderProps) => {
     if (err) { 
       console.error(err);

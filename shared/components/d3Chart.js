@@ -1,4 +1,6 @@
 import {List, Map, toJSON} from 'immutable';
+import d3 from 'd3';
+import $ from 'jquery';
 
 const OPACITY = {
   INNERAREA: 0.05,

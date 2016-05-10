@@ -1,7 +1,7 @@
-import React                  from 'react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { bindActionCreators } from 'redux';
-import * as MapActions        from '../actions/MapActions';
-import { connect }            from 'react-redux';
+import { connect } from 'react-redux';
 import { createD3Chart, updateD3Chart } from './d3Chart';
 import * as actionCreators from '../actions/MapActions';
 
