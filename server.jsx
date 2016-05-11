@@ -8,26 +8,28 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './shared/reducers/mapReducer';
 import {Map, List} from 'immutable';
+import { applyMiddleware } from 'redux';
+import promiseMiddleware from './shared/lib/promiseMiddleware'
 
 
 const app = express();
 app.use((req, res) => {
   const location = createLocation(req.url);
-  const store = createStore(reducer);
+  const store = applyMiddleware(promiseMiddleware)(createStore)(reducer);
 
   var winos = List.of(
   Map({
     id: 1,
     x:0,
-    y:1,
-    radius: Map({2: 5}),
+    y:0,
+    radius: Map({2: 0}),
     main: false
   }),
   Map({
     id: 2,
-    x:4,
+    x:0,
     y:0,
-    radius: Map({1: 5}),
+    radius: Map({1: 0}),
     main: true
   }));
   

@@ -77,8 +77,7 @@ export function setWinos(state, winos, options = Map({
 			map.updateIn([i,'x'], newX => newX = (newX * options.getIn(['ratio', 0])) + options.getIn(['offset', 0]))
 				.updateIn([i,'y'], newY => newY = (newY * options.getIn(['ratio', 1])) + options.getIn(['offset', 1]))
 		});
-		console.log('NextState : ' + nextState);
-		console.log('in i : ' + nextState.get(i).get('radius'));
+		
 		for(var id in nextState.getIn([i,'radius']).toJS()){
 			nextState = nextState.updateIn([i,'radius',id], radius => radius = (radius * options.getIn(['ratio', 0])));
 		}

@@ -1,8 +1,19 @@
+import request from 'axios';
+
+const BACKEND_URL = 'http://localhost:8079';
+
 //Winos actions
 export function setWinos(winos) {
 	return {
 		type: 'SET_WINOS',
 		winos
+	};
+}
+
+export function getWinos() {
+	return {
+		type: 'GET_WINOS',
+		promise: request.get(BACKEND_URL)
 	};
 }
 
