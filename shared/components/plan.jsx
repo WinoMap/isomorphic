@@ -1,24 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { createD3Chart, updateD3Chart } from './d3Chart';
-import * as actionCreators from '../actions/MapActions';
 
 
-function mapStateToProps(state) {
-  return {
-    winos: state.get('winos'),
-    options: state.get('options'),
-    event: state.get('event') };
-}
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
-}
-
-@connect(mapStateToProps, mapDispatchToProps)
-
-export default class Home extends React.Component {
+export default class Plan extends React.Component {
   componentDidMount() {
     var el = ReactDOM.findDOMNode(this);
     createD3Chart(el, {}, this.getChartState());
@@ -33,10 +18,6 @@ export default class Home extends React.Component {
 
   getWinos() {
     return this.props.winos || []
-  }
-
-  getEvents() {
-    return this.props.event || {}
   }
 
   getOptions() {
@@ -80,12 +61,11 @@ export default class Home extends React.Component {
 
   getChartState() {
     return {
-      //Warning, precisionDifference only translate by the X ratio
       mainWinos: this.getMainWinos(),
       onMapClick: this.props.setEventData,
       options: this.getOptions(),
       anchorWinos: this.getAnchorWinos(),
-      event: this.getEvents(),
+      event: this.props.event,
       precision: this.getPrecision(),
       isScaleDefined: this.isScaleDefined(),
       setMainWino: this.props.setMainWino,
@@ -93,30 +73,9 @@ export default class Home extends React.Component {
     };
   }
 
-  //Generate the buttons of the menu
-  getButtons(){
-    if(this.getEvents() != {}){
-      if(this.getEvents().get('type') == 'scale'){
-        //If we are using the Scale tool
-        if(this.getEvents().get('data').get('secondPoint') != ''){
-          //If the second point is placed
-          const firstPoint = this.getEvents().getIn(['data','firstPoint']);
-          const secondPoint = this.getEvents().getIn(['data','secondPoint']);
-          return (<button onClick={() => this.props.setScale(firstPoint, secondPoint)}>Confirm Scale</button>);
-        }
-      }
-    }
-  }
-
   render() {
     return (
       <div app_container>
-        <div buttonContainer>
-          <button onClick={() => this.props.editWino(1,{x: 4})}>Edit Wino</button>
-          <button onClick={() => this.props.togglePrecision()}>DisplayMode Toggle</button>
-          <button onClick={() => this.props.eventStart('scale')}>Scale tool</button>
-              {this.getButtons()}
-        </div>
         <div className="Chart">
         </div>
       </div>
