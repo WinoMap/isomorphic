@@ -112,6 +112,7 @@ export default class Home extends React.Component {
     return (
       <div app_container>
         <div buttonContainer>
+          <button onClick={() => this.props.editWino(1,{x: 4})}>Edit Wino</button>
           <button onClick={() => this.props.togglePrecision()}>DisplayMode Toggle</button>
           <button onClick={() => this.props.eventStart('scale')}>Scale tool</button>
               {this.getButtons()}

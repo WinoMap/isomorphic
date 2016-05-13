@@ -211,8 +211,8 @@ function manageMains(state){
               .on("click", function(wino) { console.log('click'); state.setAnchorWino(wino.get('id')) });
   //ENTER & UPDATE
   main.attr("id", function(wino) { return "main"+wino.get('id') })
-      .attr("cx", function(wino) { return wino.get('x') })
-      .attr("cy", function(wino) { return wino.get('y') });
+      .attr("cx", function(wino) { return wino.get('scaledX') })
+      .attr("cy", function(wino) { return wino.get('scaledY') });
 
   main.enter().append('g')
               .attr('class', function(wino){ return 'areaInner'+wino.get('id')});
@@ -236,7 +236,7 @@ function manageAnchors(state){
 
     var main = state.mainWinos[key];
     intersectionDatas[main.get('id')] = {x: [], y: [], r: []};
-
+/*
     //Inner area
     var g = d3.select('#inside').selectAll('.areaInner'+main.get('id'));
     var areaInner = g.selectAll('.areaInnerCircle').data(state.anchorWinos, function(anchor) { return anchor.get('id') });
@@ -246,12 +246,12 @@ function manageAnchors(state){
             .style("opacity", OPACITY.INNERAREA);
     //ENTER & UPDATE
     areaInner.attr("id", function(wino) { return 'areaInner'+main.get('id')+'-'+wino.get('id') })
-            .attr("cx", function(wino) { return wino.get('x') })
-            .attr("cy", function(wino) { return wino.get('y') })
-            .attr("r", function(wino) { return wino.getIn(['radius', ''+main.get('id')])*state.precision });
+            .attr("cx", function(wino) { return wino.get('scaledX') })
+            .attr("cy", function(wino) { return wino.get('scaledY') })
+            .attr("r", function(wino) { return wino.getIn(['scaledRadius', ''+main.get('id')])*state.precision });
     //EXIT
     areaInner.exit().remove();
-
+*/
     //Outer area
     var g = d3.select('#inside').selectAll('.areaOuter'+main.get('id'));
     var areaOuter = g.selectAll('.areaOuterCircle').data(state.anchorWinos, function(anchor) { return anchor.get('id') });
@@ -261,12 +261,12 @@ function manageAnchors(state){
             .style("opacity", OPACITY.OUTERAREA);
     //ENTER & UPDATE
     areaOuter.attr("id", function(wino) { return "areaOuter"+main.get('id')+"-"+wino.get('id') })
-            .attr("cx", function(wino) { intersectionDatas[main.get('id')]['x'].push(wino.get('x'));
-                                        return wino.get('x'); })
-            .attr("cy", function(wino) { intersectionDatas[main.get('id')]['y'].push(wino.get('y'));
-                                        return wino.get('y'); })
+            .attr("cx", function(wino) { intersectionDatas[main.get('id')]['x'].push(wino.get('scaledX'));
+                                        return wino.get('scaledX'); })
+            .attr("cy", function(wino) { intersectionDatas[main.get('id')]['y'].push(wino.get('scaledY'));
+                                        return wino.get('scaledY'); })
             .attr("r", function(wino) { intersectionDatas[main.get('id')]['r'].push(wino.getIn(['radius',''+main.get('id')]))
-                                        return wino.getIn(['radius',''+main.get('id')])});
+                                        return wino.getIn(['scaledRadius',''+main.get('id')])});
     //EXIT
     areaOuter.exit().remove();
   }
@@ -288,8 +288,8 @@ function manageAnchors(state){
               .style("opacity", 1);
   //ENTER & UPDATE
   anchor.attr("id", function(wino) { return "anchor"+wino.get('id') })
-        .attr("cx", function(wino) { return wino.get('x') })
-        .attr("cy", function(wino) { return wino.get('y') })
+        .attr("cx", function(wino) { return wino.get('scaledX') })
+        .attr("cy", function(wino) { return wino.get('scaledY') })
   //EXIT
   anchor.exit().remove();
 

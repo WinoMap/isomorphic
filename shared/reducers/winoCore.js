@@ -43,9 +43,15 @@ var example = Map({
 			secondPoint: ''
 		})
 	})
+	ui: Map ({
+		
+	})
 });*/
 
 import {List, Map, toJSON} from 'immutable';
+import axios from 'axios';
+
+const PUSHWINO_URL = 'http://localhost:8079/pushWinos';
 
 /**
 * Return the position in the "winos" list of a wino
@@ -61,6 +67,18 @@ function getRealWinoId(state, idToFind){
 	}
 }
 
+function pushDataToBackEnd(state){
+
+	axios.post(PUSHWINO_URL,
+    	JSON.stringify(state.toJSON()), {
+      headers: { 
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }).then(function(response) {
+        console.log(response);
+    });
+}
+
 /**
 * Define a list of winos in the state.
 * @param: state Map store the state of the application
@@ -74,17 +92,20 @@ export function setWinos(state, winos, options = Map({
 	let nextState = winos;
 	for(var i=0;i<winos.size;i++){
 		nextState = nextState.withMutations(map => {
-			map.updateIn([i,'x'], newX => newX = (newX * options.getIn(['ratio', 0])) + options.getIn(['offset', 0]))
-				.updateIn([i,'y'], newY => newY = (newY * options.getIn(['ratio', 1])) + options.getIn(['offset', 1]))
+			map.setIn([i,'scaledX'], map.getIn([i,'x']))
+				.setIn([i,'scaledY'], map.getIn([i,'y']))
+				.updateIn([i,'scaledX'], newX => newX = (newX * options.getIn(['ratio', 0])) + options.getIn(['offset', 0]))
+				.updateIn([i,'scaledY'], newY => newY = (newY * options.getIn(['ratio', 1])) + options.getIn(['offset', 1]))
 		});
 		
 		for(var id in nextState.getIn([i,'radius']).toJS()){
-			nextState = nextState.updateIn([i,'radius',id], radius => radius = (radius * options.getIn(['ratio', 0])));
+			nextState = nextState.setIn([i,'scaledRadius',id], state.getIn([i,'radius',id]));
+			nextState = nextState.updateIn([i,'scaledRadius',id], radius => radius = (radius * options.getIn(['ratio', 0])));
 		}
 		
 	}
-	/*console.log('--- SETWINOS ---');
-	console.log(nextState.toJSON());*/
+	console.log('--- SETWINOS ---');
+	console.log(nextState.toJSON());
   	return nextState;
 }
 
@@ -110,49 +131,28 @@ export function delWino(state, idToDelete){
 }
 
 /**
-* Change the X and Y values of a wino.
-* @param: state Map store the state of the application
-* @param: idToMove integer id of the wino to move
-* @param: x integer x coordinate
-* @param: y integer y coordinate
-*/
-export function moveWino(state, idToMove, newX, newY, options = Map({
-																	ratio: List.of(1,1),
-																	offset: List.of(0,0)
-																	}))
-																{
-	let realX = (newX * options.getIn(['ratio', 0])) + options.getIn(['offset', 0]);
-	let realY = (newY * options.getIn(['ratio', 1])) + options.getIn(['offset', 1]);
-
-	return state.withMutations(map => {
-		map.setIn([getRealWinoId(state, idToMove), "x"], realX)
-			.setIn([getRealWinoId(state, idToMove), "y"], realY);
-	});
-	return state;
-}
-
-/**
-* Set the state of a wino as main.
+* Set the state of a wino as mobile or anchor.
 * @param: state Map store the state of the application
 * @param: id integer of the wino to define.
 */
-export function setMainWino(state, id){
+export function toggleTypeWino(state, id){
 	var nextState = state;
-	nextState = nextState.setIn([getRealWinoId(state,id), 'main'], true);
-	return nextState;
+	if(state.getIn([getRealWinoId(state,id),'main']) == false){
+		return nextState = nextState.setIn([getRealWinoId(state,id), 'main'], true);
+	} else {
+		return nextState.setIn([getRealWinoId(state,id), 'main'], false);
+	}
 }
 
-/**
-* Set the state of a wino as an anchor.
-* @param: state Map store the state of the application
-* @param: id integer of the wino to define.
-*/
-export function setAnchorWino(state, id){
-	var nextState = state;
-	nextState = nextState.setIn([getRealWinoId(state,id), 'main'], false);
+export function editWino(state, id, params){
+	console.log(state.toJSON());
+	let nextWino = state.get(getRealWinoId(state, id)).merge(params);
+	let nextState = state.set(getRealWinoId(state, id), nextWino);
+	pushDataToBackEnd(nextState);
+
+	console.log(nextState.toJSON());
 	return nextState;
 }
-
 
 //=== OPTIONS
 

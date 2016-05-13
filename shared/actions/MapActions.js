@@ -1,20 +1,21 @@
 import request from 'axios';
 
-const BACKEND_URL = 'http://localhost:8079';
+const GETWINO_URL = 'http://localhost:8079/getWinos';
 
 //Winos actions
-export function setWinos(winos) {
-	return {
-		type: 'SET_WINOS',
-		winos
-	};
-}
-
 export function getWinos() {
 	return {
 		type: 'GET_WINOS',
-		promise: request.get(BACKEND_URL)
+		promise: request.get(GETWINO_URL)
 	};
+}
+
+export function editWino(id, params) {
+	return {
+		type: 'EDIT_WINO',
+		id,
+		params
+	}
 }
 
 export function addWino(wino) {
@@ -31,25 +32,9 @@ export function delWino(id) {
 	};
 }
 
-export function moveWino(id, x, y) {
+export function toggleTypeWino(id){
 	return {
-		type: 'MOVE_WINO',
-		id,
-		x,
-		y
-	};
-}
-
-export function setMainWino(id){
-	return {
-		type: 'SET_MAIN_WINO',
-		id
-	}
-}
-
-export function setAnchorWino(id){
-	return {
-		type: 'SET_ANCHOR_WINO',
+		type: 'TOGGLE_TYPE_WINO',
 		id
 	}
 }

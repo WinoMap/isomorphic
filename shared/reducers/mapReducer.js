@@ -1,24 +1,20 @@
 import {Map, List, fromJS} from 'immutable';
-import {setWinos, addWino, delWino, moveWino, setMainWino, setAnchorWino,
+import {setWinos, addWino, delWino, editWino, toggleTypeWino,
 togglePrecision, setScale, setOptions, apiRequest,
 setEvent, setEventData, eventStart } from './winoCore';
 
 function winos(state = List(), action, optionState){
   switch(action.type){
-    case 'SET_WINOS':
-      return setWinos(state, action.winos, optionState.get('scale'));
     case 'GET_WINOS':
       return setWinos(state, fromJS(action.res.data), optionState.get('scale'));
     case 'ADD_WINO':
       return addWino(state, action.wino);
     case 'DEL_WINO':
       return delWino(state, action.id);
-    case 'MOVE_WINO':
-      return moveWino(state, action.id, action.x, action.y, optionState.get('scale'));
-    case 'SET_MAIN_WINO':
-      return setMainWino(state, action.id);
-    case 'SET_ANCHOR_WINO':
-      return setAnchorWino(state, action.id);
+    case 'TOGGLE_TYPE_WINO':
+      return toggleTypeWino(state, action.id);
+    case 'EDIT_WINO':
+      return editWino(state, action.id, action.params);
   }
   return state;
 }
