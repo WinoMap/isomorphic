@@ -93,12 +93,10 @@ export function toggleTypeWino(state, id){
 }
 
 export function editWino(state, id, params){
-	console.log(state.toJSON());
 	let nextWino = state.get(getRealWinoId(state, id)).merge(params);
 	let nextState = state.set(getRealWinoId(state, id), nextWino);
 	pushDataToBackEnd(nextState);
 
-	console.log(nextState.toJSON());
 	return nextState;
 }
 
