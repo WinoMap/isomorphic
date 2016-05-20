@@ -1,7 +1,8 @@
-import {Map, List, fromJS} from 'immutable';
-import {setWinos, addWino, delWino, editWino, toggleTypeWino,
+import { Map, List, fromJS } from 'immutable';
+import { setWinos, addWino, delWino, editWino, toggleTypeWino,
 togglePrecision, setScale, setOptions, apiRequest,
-setEvent, setEventData, eventStart } from './winoCore';
+setEvent, setEventData, eventStart,
+UItoggleAdvanced } from './winoCore';
 
 function winos(state = List(), action, optionState){
   switch(action.type){
@@ -45,10 +46,19 @@ function event(state = Map(), action){
   return state;
 }
 
+function ui(state = Map(), action){
+  switch(action.type){
+    case 'UI_TOGGLE_ADVANCED':
+      return UItoggleAdvanced(state);
+  }
+  return state;
+}
+
 export default function reducer(state = Map(), action) {
   return Map({
     options: options(state.get('options'), action),
     event: event(state.get('event'), action),
-    winos: winos(state.get('winos'), action, state.get('options'))
+    winos: winos(state.get('winos'), action, state.get('options')),
+    ui: ui(state.get('ui'), action),
   });
 }

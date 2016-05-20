@@ -65,6 +65,11 @@ app.use((req, res) => {
         <script type="application/javascript">
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
         </script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
       </head>
       <body>
         <div id="react-view">${componentHTML}</div>

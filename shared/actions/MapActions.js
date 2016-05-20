@@ -74,3 +74,11 @@ export function eventStart(eventType) {
 		eventType
 	};
 }
+
+//UI events
+
+export function UItoggleAdvanced() {
+	return {
+		type: 'UI_TOGGLE_ADVANCED',
+	};
+}

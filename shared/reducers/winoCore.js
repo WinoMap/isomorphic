@@ -1,53 +1,3 @@
-//State :
-/*
-var example = Map({
-	winos: Map({
-		List.of(
-			Map({
-				id: 5,
-				x: 5,
-				y: 5,
-				main: false
-				radius: Map({
-					3: 0.2,
-					6: 2
-				})
-			}),
-			Map({
-				id:3,
-				x: 8,
-				y: 1,
-				main: true
-				radius: Map({})
-			}),
-			Map({
-				id: 6,
-				x: 1,
-				y: 3,
-				main: true
-				radius: Map({})
-			})
-		)
-	}),
-	options: Map({
-		scale: Map({
-			ratio: List.of(5.4,8.2),
-			offset: List.of(100,235)
-		}),
-		precisionMode: "point"
-	}),
-	event: Map({
-		type: 'scale',
-		data: Map({
-			firstPoint: '',
-			secondPoint: ''
-		})
-	})
-	ui: Map ({
-		
-	})
-});*/
-
 import {List, Map, toJSON} from 'immutable';
 import axios from 'axios';
 
@@ -58,7 +8,7 @@ const PUSHWINO_URL = 'http://localhost:8079/pushWinos';
 * @param: state Map store the state of the application
 * @param: idToFind integer id attribute of the wino
 */
-function getRealWinoId(state, idToFind){
+export function getRealWinoId(state, idToFind){
 	var length = state.size;
 	for(var i=0;i<state.size;i++){
 		if(state.get(i).get("id") == idToFind){
@@ -104,8 +54,6 @@ export function setWinos(state, winos, options = Map({
 		}
 		
 	}
-	console.log('--- SETWINOS ---');
-	console.log(nextState.toJSON());
   	return nextState;
 }
 
@@ -261,4 +209,18 @@ export function eventStart(state, eventType){
 	    	});
 	}
 	return nextState
+}
+
+//UI events
+
+/**
+* Display or hide the advanced menu elements
+* @param: state Map store the state of the application
+*/
+export function UItoggleAdvanced(state){
+	if(state.get('advancedMenuOn') == true){
+		return state.set('advancedMenuOn', false);
+	}else{
+		return state.set('advancedMenuOn', true);
+	}
 }
