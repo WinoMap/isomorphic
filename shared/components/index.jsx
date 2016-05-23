@@ -6,16 +6,18 @@ import { connect } from 'react-redux';
 import {List, Map, toJSON} from 'immutable';
 import { Button, ButtonGroup, Panel } from 'react-bootstrap';
 import MenuWinos from './menuWinos';
+import Edit from './edit';
 
 function mapStateToProps(state) {
-  return {
-    winos: state.get('winos'),
-    options: state.get('options'),
-    event: state.get('event'),
-    ui: state.get('ui'), };
+	return {
+	    winos: state.get('winos'),
+	    options: state.get('options'),
+	    event: state.get('event'),
+	    ui: state.get('ui'),
+	};
 }
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
+  	return bindActionCreators(actionCreators, dispatch);
 }
 
 //Default component
@@ -23,10 +25,13 @@ function mapDispatchToProps(dispatch) {
 export default class AppView extends React.Component {
   render() {
     return (
-      <div id="app-view">
-        <Header {...this.props}/>
-        <MenuContainer {...this.props}/>
-      </div>
+	    <div id="app-view" style={{position: "relative"}}>
+        	<Header {...this.props}/>
+	        <MenuContainer {...this.props}/>
+	        {this.props.ui.get('editedWino') != undefined
+	        	? <Edit {...this.props}/>
+	        	: false}
+	    </div>
     );
   }
 }
@@ -34,7 +39,7 @@ export default class AppView extends React.Component {
 
 
 const Header = (props) => <div>
-	<h1>WinoMap </h1> 
+	<h1>WinoMap</h1> 
 	<hr />
 	<MenuTools {...props}/>
 </div>
@@ -64,8 +69,6 @@ class MenuTools extends React.Component {
 		return (
 			<div>
 				<ButtonGroup style={buttonGroupStyle}>
-					<Button>Tools</Button>
-					<Button>Advanced</Button>
 					<Button onClick={() => this.props.editWino(1,{x: 4})}>Edit Wino</Button>
 					<Button onClick={() => this.props.togglePrecision()}>DisplayMode Toggle</Button>
 					<Button onClick={() => this.props.eventStart('scale')}>Scale tool</Button>

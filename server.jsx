@@ -61,7 +61,7 @@ app.use((req, res) => {
     <html>
       <head>
         <meta charset="utf-8">
-        <title>Redux Demo</title>
+        <title>OpenWino Map</title>
         <script type="application/javascript">
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
         </script>

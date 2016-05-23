@@ -1,6 +1,7 @@
 import React from 'react';
 import { getRealWinoId } from '../reducers/winoCore';
-import { Button, Panel, Accordion, Tabs, Tab, ListGroup, ListGroupItem, Grid, Col, Row } from 'react-bootstrap';
+import { Button, Panel, Accordion, Tabs, Tab, ListGroup, ListGroupItem, Grid, Col, Row,
+Form, FormGroup, FormControl, InputGroup } from 'react-bootstrap';
 import {List, Map, toJSON} from 'immutable';
 // import style from '../res/css/style';
 
@@ -67,20 +68,51 @@ export default class MenuWinos extends React.Component {
 						width: "33%",
 					}
 
+					var formStyle = {
+						width: "70%",
+					}
+
+					var paddingAdjusted = {
+						paddingLeft: "4px",
+						paddingRight: 0,
+						minWidth: "40px",
+					}
+
 					panelContent.push(
 						<br/>,
 						<div style={anchorColor}>&nbsp;</div>,
 						<ListGroupItem>
 							<Grid>
 								<Row className="show-grid">
-									<Col xs={4} md={4}>
-										<strong>Anchor n°</strong>{anchor.get('id')}
+									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+										<InputGroup style={formStyle}>
+										    <InputGroup.Addon>Anchor n°</InputGroup.Addon>
+										    <FormControl style={paddingAdjusted} type="text" value={anchor.get('id')} disabled="true"/>
+										</InputGroup>
 									</Col>
-									<Col xs={4} md={4}>
-										<strong>Distance: </strong>{wino.get('radius').get(anchorsAtRange[j])}
+									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+										<InputGroup style={formStyle}>
+										    <InputGroup.Addon>Distance</InputGroup.Addon>
+										    <FormControl style={paddingAdjusted} type="text" value={anchor.get('radius').get(wino.get('id'))} disabled="true"/>
+										</InputGroup>
 									</Col>
-									<Col xs={4} md={4}>
-										<strong>x,y: </strong>{anchor.get('x')}, {anchor.get('y')}
+									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+										<Grid>
+											<Row className="show-grid">
+												<Col xs={6} md={2} sm={2}>
+													<InputGroup>
+													    <FormControl style={paddingAdjusted} type="text" value={anchor.get('x')} disabled="true"/>
+													    <InputGroup.Addon>x</InputGroup.Addon>
+													</InputGroup>
+												</Col>
+												<Col xs={6} md={2} sm={2}>
+													<InputGroup>
+													    <FormControl style={paddingAdjusted} type="text" value={anchor.get('y')} disabled="true"/>
+													    <InputGroup.Addon>y</InputGroup.Addon>
+													</InputGroup>
+												</Col>
+											</Row>
+										</Grid>
 									</Col>
 								</Row>
 							</Grid>
@@ -97,9 +129,9 @@ export default class MenuWinos extends React.Component {
 					<Panel header={header} eventKey={i}>
 						<ListGroup fill>
 							<ListGroupItem>
-								<Button>Focus</Button>
-								<Button>Edit</Button>
-								<Button>Delete</Button>
+								<Button>Display</Button>
+								<Button onClick={() => this.props.UIeditWino(wino.get('id'))}>Edit</Button>
+								<Button onClick={() => this.props.delWino(wino.get('id'))}>Delete</Button>
 							</ListGroupItem>
 							<ListGroupItem>
 								<ListGroup fill>
@@ -126,20 +158,51 @@ export default class MenuWinos extends React.Component {
 						width: "33%",
 					}
 
+					var formStyle = {
+						width: "70%",
+					}
+
+					var paddingAdjusted = {
+						paddingLeft: "4px",
+						paddingRight: 0,
+						minWidth: "40px",
+					}
+
 					panelContent.push(
 						<br/>,
 						<div style={mobileColor}>&nbsp;</div>,
 						<ListGroupItem>
 							<Grid>
 								<Row className="show-grid">
-									<Col xs={4} md={4}>
-										<strong>Mobile n°</strong>{mobile.get('id')}
+									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+										<InputGroup style={formStyle}>
+										    <InputGroup.Addon>Mobile n°</InputGroup.Addon>
+										    <FormControl style={paddingAdjusted} type="text" value={mobile.get('id')} disabled="true"/>
+										</InputGroup>
 									</Col>
-									<Col xs={4} md={4}>
-										<strong>Distance: </strong>{wino.get('radius').get(mobilesAtRange[j])}
+									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+										<InputGroup style={formStyle}>
+										    <InputGroup.Addon>Distance</InputGroup.Addon>
+										    <FormControl style={paddingAdjusted} type="text" value={wino.get('radius').get(mobilesAtRange[j])} disabled="true"/>
+										</InputGroup>
 									</Col>
-									<Col xs={4} md={4}>
-										<strong>x,y: </strong>{mobile.get('x')}, {mobile.get('y')}
+									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+										<Grid>
+											<Row className="show-grid">
+												<Col xs={6} md={2} sm={2}>
+													<InputGroup>
+													    <FormControl style={paddingAdjusted} type="text" value={mobile.get('x')} disabled="true"/>
+													    <InputGroup.Addon>x</InputGroup.Addon>
+													</InputGroup>
+												</Col>
+												<Col xs={6} md={2} sm={2}>
+													<InputGroup>
+													    <FormControl style={paddingAdjusted} type="text" value={mobile.get('y')} disabled="true"/>
+													    <InputGroup.Addon>y</InputGroup.Addon>
+													</InputGroup>
+												</Col>
+											</Row>
+										</Grid>
 									</Col>
 								</Row>
 							</Grid>
@@ -154,9 +217,9 @@ export default class MenuWinos extends React.Component {
 					<Panel header={header} eventKey={i}>
 						<ListGroup fill>
 							<ListGroupItem>
-								<Button>Focus</Button>
-								<Button>Edit</Button>
-								<Button>Delete</Button>
+								<Button>Display</Button>
+								<Button onClick={() => this.props.UIeditWino(wino.get('id'))}>Edit</Button>
+								<Button onClick={() => this.props.delWino(wino.get('id'))}>Delete</Button>
 							</ListGroupItem>
 							<ListGroupItem>
 								<ListGroup fill>

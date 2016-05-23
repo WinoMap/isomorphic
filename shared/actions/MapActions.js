@@ -82,3 +82,17 @@ export function UItoggleAdvanced() {
 		type: 'UI_TOGGLE_ADVANCED',
 	};
 }
+
+export function UIeditWino(id) {
+	return {
+		type: 'UI_EDIT_WINO',
+		id
+	};
+}
+
+export function UIcolorChange(color) {
+	return {
+		type: 'UI_COLOR_CHANGE',
+		color
+	};
+}

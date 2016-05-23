@@ -65,7 +65,10 @@ export function setWinos(state, winos, options = Map({
 
 */
 export function addWino(state, wino) {
-	return state.push(wino);
+	let nextState = state.push(wino);
+
+	pushDataToBackEnd(nextState);
+	return nextState;
 }
 
 
@@ -75,7 +78,10 @@ export function addWino(state, wino) {
 * @param: idToDelete integer id of the wino to delete
 */
 export function delWino(state, idToDelete){
-	return state.delete(getRealWinoId(state, idToDelete));
+	let nextState = state.delete(getRealWinoId(state, idToDelete));
+
+	pushDataToBackEnd(nextState);
+	return nextState;
 }
 
 /**
@@ -84,19 +90,22 @@ export function delWino(state, idToDelete){
 * @param: id integer of the wino to define.
 */
 export function toggleTypeWino(state, id){
-	var nextState = state;
+	let nextState = state;
 	if(state.getIn([getRealWinoId(state,id),'main']) == false){
-		return nextState = nextState.setIn([getRealWinoId(state,id), 'main'], true);
+		nextState = nextState.setIn([getRealWinoId(state,id), 'main'], true);
 	} else {
-		return nextState.setIn([getRealWinoId(state,id), 'main'], false);
+		nextState = nextState.setIn([getRealWinoId(state,id), 'main'], false);
 	}
+
+	pushDataToBackEnd(nextState);
+	return nextState;
 }
 
 export function editWino(state, id, params){
 	let nextWino = state.get(getRealWinoId(state, id)).merge(params);
 	let nextState = state.set(getRealWinoId(state, id), nextWino);
-	pushDataToBackEnd(nextState);
 
+	pushDataToBackEnd(nextState);
 	return nextState;
 }
 
@@ -215,10 +224,28 @@ export function eventStart(state, eventType){
 * Display or hide the advanced menu elements
 * @param: state Map store the state of the application
 */
-export function UItoggleAdvanced(state){
-	if(state.get('advancedMenuOn') == true){
+export function UItoggleAdvanced(state) {
+	if(state.get('advancedMenuOn') == true) {
 		return state.set('advancedMenuOn', false);
-	}else{
+	} else {
 		return state.set('advancedMenuOn', true);
 	}
+}
+
+export function UIeditWino(state, action, winos) {
+	let wino = winos.get(getRealWinoId(winos, action.id));
+	let nextState = state.set('editedWino', action.id);
+	nextState = nextState.set('colorPicker', wino.get('color'));
+	return nextState;
+}
+
+export function UIvalidateEditWino(state) {
+	let nextState = state.set('editedWino', undefined);
+	return nextState;
+}
+
+export function UIcolorChange(state, action) {
+	let nextState = state.set('colorPicker', action.color);
+	console.log(nextState.toJSON());
+	return nextState
 }
