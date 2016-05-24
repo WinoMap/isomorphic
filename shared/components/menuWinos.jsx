@@ -81,7 +81,7 @@ export default class MenuWinos extends React.Component {
 					panelContent.push(
 						<br/>,
 						<div style={anchorColor}>&nbsp;</div>,
-						<ListGroupItem>
+						<ListGroupItem style={{paddingLeft:0, paddingRight: 0,}}>
 							<Grid>
 								<Row className="show-grid">
 									<Col xs={6} md={4}>
@@ -133,7 +133,7 @@ export default class MenuWinos extends React.Component {
 					<Panel header={header} eventKey={i}>
 						<ListGroup fill>
 							<ListGroupItem>
-								<Button>Display</Button>
+								<Button onClick={() => this.props.toggleDisplayWino(winoId)}>Display</Button>
 								<Button onClick={() => this.props.UIeditWino(winoId)}>Edit</Button>
 							</ListGroupItem>
 							<ListGroupItem>
@@ -177,19 +177,19 @@ export default class MenuWinos extends React.Component {
 						<ListGroupItem>
 							<Grid>
 								<Row className="show-grid">
-									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+									<Col xs={6} md={4}>
 										<InputGroup style={formStyle}>
 										    <InputGroup.Addon>Mobile n°</InputGroup.Addon>
 										    <FormControl style={paddingAdjusted} type="text" value={mobile.get('id')} disabled="true"/>
 										</InputGroup>
 									</Col>
-									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+									<Col xs={6} md={4}>
 										<InputGroup style={formStyle}>
 										    <InputGroup.Addon>Distance</InputGroup.Addon>
 										    <FormControl style={paddingAdjusted} type="text" value={wino.get('radius').get(mobilesAtRange[j])} disabled="true"/>
 										</InputGroup>
 									</Col>
-									<Col xs={4} md={4} style={{margin: 0, padding: 0,}}>
+									<Col xs={12} md={4} style={{margin: 0, padding: 0,}}>
 										<Grid>
 											<Row className="show-grid">
 												<Col xs={6} md={2} sm={2}>

@@ -108,6 +108,7 @@ class AppContainer extends React.Component {
 			right: 0,
 			bottom: "20px",
 			left: 0,
+			boxShadow: "0px 0px 10px black",
 		};
 
 		const buttonBottomStyle = {

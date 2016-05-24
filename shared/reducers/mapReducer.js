@@ -15,6 +15,8 @@ function winos(state = List(), action, optionState){
       return delWino(state, action.id);
     case 'TOGGLE_TYPE_WINO':
       return toggleTypeWino(state, action.id);
+    case 'TOGGLE_DISPLAY_WINO':
+      return toggleDisplayWino(state, action.id);
     case 'VALIDATE_EDIT_WINO':
       return editWino(state, action.newValues);
   }

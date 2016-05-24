@@ -19,7 +19,10 @@ export const createD3Chart = function(el, props, state) {
   //Initialise the svg element
   var svg = d3.select(el).append("svg")
                         .attr("id","plan")
+                        .attr("height", "100%")
+                        .attr("width", "100%")
                         .attr("viewBox","0 0 1000 1000")
+                        .attr("preserveAspectRatio","xMidYMid slice")
                         .on("mousedown", mouseDown)
                         .on("mouseup", mouseUp)
                         .on("click", mouseClick)

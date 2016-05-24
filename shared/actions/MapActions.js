@@ -39,6 +39,13 @@ export function toggleTypeWino(id){
 	}
 }
 
+export function toggleDisplayWino(id){
+	return {
+		type: 'TOGGLE_DISPLAY_WINO',
+		id,
+	}
+}
+
 //Options actions
 export function setOptions(options) {
 	return {

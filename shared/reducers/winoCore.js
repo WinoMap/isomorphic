@@ -23,8 +23,16 @@ export function getRealWinoId(state, idToFind){
 */
 function pushDataToBackEnd(state){
 
+	// Remove the temp datas before sending them
+	/*var stateToSend = state;
+	for(key in state.toJSON()){
+		if(stateToSend.get(key).get('temp') != undefined){
+			stateToSend.deleteIn([key,'temp']);
+		}
+	}*/
+
 	axios.post(PUSHWINO_URL,
-    	JSON.stringify(state.toJSON()), {
+    	JSON.stringify(stateToSend.toJSON()), {
       headers: { 
         "Content-Type": "application/x-www-form-urlencoded"
       }
@@ -79,8 +87,23 @@ export function toggleTypeWino(state, id){
 }
 
 /**
+* Change if a wino is displayed or not.
+* @param: state Map store the state of the winos
+* @param: id integer of the wino to define.
+*/
+export function toggleTypeWino(state, id){
+	let nextState = state;
+	if(state.getIn([getRealWinoId(state,id),'local','displayed']) == false){
+		nextState = nextState.setIn([getRealWinoId(state,id), 'local', 'displayed'], true);
+	} else {
+		nextState = nextState.setIn([getRealWinoId(state,id), 'local', 'displayed'], false);
+	}
+	return nextState;
+}
+
+/**
 * Set the new values of a wino, by merging with old ones
-* @param: state Map store the state of the application
+* @param: state Map store the state of the winos
 * @param: id integer Wino to modify
 * @param: newValues Map the new values
 */
