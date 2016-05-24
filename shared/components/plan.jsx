@@ -75,8 +75,8 @@ export default class Plan extends React.Component {
 
   render() {
     return (
-      <div app_container>
-        <div className="Chart">
+      <div app_container style={this.props.style}>
+        <div className="Chart" >
         </div>
       </div>
     );

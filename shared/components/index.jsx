@@ -25,9 +25,8 @@ function mapDispatchToProps(dispatch) {
 export default class AppView extends React.Component {
   render() {
     return (
-	    <div id="app-view" style={{position: "relative"}}>
-        	<Header {...this.props}/>
-	        <MenuContainer {...this.props}/>
+	    <div id="app-view" style={{position: "absolute", top: 0, bottom:0, left:0, right: 0}}>
+	        <AppContainer {...this.props}/>
 	        {this.props.ui.get('editedWino') != undefined
 	        	? <Edit {...this.props}/>
 	        	: false}
@@ -38,9 +37,8 @@ export default class AppView extends React.Component {
 
 
 
-const Header = (props) => <div>
-	<h1>WinoMap</h1> 
-	<hr />
+const Header = (props) => <div style={{height: "115px"}}>
+	<h1>WinoMap</h1>
 	<MenuTools {...props}/>
 </div>
 
@@ -69,7 +67,6 @@ class MenuTools extends React.Component {
 		return (
 			<div>
 				<ButtonGroup style={buttonGroupStyle}>
-					<Button onClick={() => this.props.editWino(1,{x: 4})}>Edit Wino</Button>
 					<Button onClick={() => this.props.togglePrecision()}>DisplayMode Toggle</Button>
 					<Button onClick={() => this.props.eventStart('scale')}>Scale tool</Button>
 					{this.getButtons()}
@@ -79,37 +76,63 @@ class MenuTools extends React.Component {
 	}
 }
 
-class MenuContainer extends React.Component {
+class AppContainer extends React.Component {
 
 	render(){
 
 		const divStyle = {
 			position: "relative",
+			zIndex: 3,
 		};
 
 		const panelAdvancedStyle = {
 			position: "absolute",
 			right: 0,
-			bottom: 14,
+			bottom: "30px",
 			left: 0,
 		};
 
 		const buttonAdvancedStyle = {
-			width: "100%",
+			position: "absolute",
+			left: 0,
+			right: 0,
+			bottom: 0,
+			height: "50px",
+		}
+
+		const planStyle = {
+			position: "absolute",
+			top: "115px",
+			bottom: "50px",
+			left: 0,
+			right: 0,
+			overflow: "hidden",
+		}
+
+		const panelOverflow = {
+			height: "70vh",
+			width: "100vw",
+			overflow: "scroll",
+			overflowX: "hidden",
 		}
 
 		return (
-			<div style={divStyle}>
+			<div>
+				<Header {...this.props}/>
 				<Plan winos={this.props.winos} options={this.props.options}
-					event={this.props.event} setEventData={this.props.setEventData}/>
-
-				<Panel collapsible expanded={this.props.ui.get('advancedMenuOn')}
-					style={panelAdvancedStyle}>
-					<MenuWinos {...this.props}/>
-		        </Panel>
+					event={this.props.event} setEventData={this.props.setEventData}
+					style={planStyle}
+				/>
 				<Button onClick={this.props.UItoggleAdvanced} style={buttonAdvancedStyle}>
 					display Advanced
 				</Button>
+				<Panel collapsible expanded={this.props.ui.get('advancedMenuOn')}
+					style={panelAdvancedStyle}
+				>
+					<div style={panelOverflow}>
+						<MenuWinos {...this.props}/>
+		    		</div>
+		        </Panel>
 			</div>
 		);
 	}

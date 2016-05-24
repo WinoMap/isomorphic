@@ -16,14 +16,14 @@ export default class Edit extends React.Component {
 			id: ReactDOM.findDOMNode(this.refs.id).value,
 			x: ReactDOM.findDOMNode(this.refs.x).value,
 			y: ReactDOM.findDOMNode(this.refs.y).value,
-			color: this.props.ui.get('colorPicker'),
+			color: this.props.ui.getIn(['editedWino','color']),
 		};
-
 		console.log(newValues);
+		this.props.validateEditWino(newValues);
 	}
 
 	render() {
-		var wino = this.props.winos.get(getRealWinoId(this.props.winos, this.props.ui.get('editedWino')));
+		var wino = this.props.ui.get('editedWino');
 
 		var newWinoType;
 		var currentWinoType;
@@ -45,6 +45,7 @@ export default class Edit extends React.Component {
 			right: "3%",
 			backgroundColor: "white",
 			zIndex: 10,
+			boxShadow: "0px 0px 8px black",
 		};
 
 		var backgroundScreen = {
@@ -73,7 +74,7 @@ export default class Edit extends React.Component {
 						    	type="number"
 						    	placeholder="Enter ID"
 						    	ref="id"
-						    	value={wino.get('id')}
+						    	defaultValue={wino.get('id')}
 						    />
 					    </FormGroup>
 					    <Grid>
@@ -85,7 +86,7 @@ export default class Edit extends React.Component {
 											<FormControl
 												type="number"
 						    					ref="x"
-						    					value={wino.get('x')}
+						    					defaultValue={wino.get('x')}
 											/>
 										</InputGroup>
 									</FormGroup>
@@ -97,7 +98,7 @@ export default class Edit extends React.Component {
 											<FormControl
 												type="number"
 						    					ref="y"
-						    					value={wino.get('y')}
+						    					defaultValue={wino.get('y')}
 											/>
 										</InputGroup>
 									</FormGroup>
@@ -107,7 +108,7 @@ export default class Edit extends React.Component {
 						<hr/>
 						<SliderPicker
 							onChangeComplete={ this.props.UIcolorChange }
-							color={this.props.ui.get('colorPicker')}
+							color={ wino.get('color') }
 						/>
 						<hr/>
 						To convert this Wino to an {newWinoType}, click here &nbsp;

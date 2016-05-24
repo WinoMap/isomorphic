@@ -123,6 +123,10 @@ export default class MenuWinos extends React.Component {
 
 				// Title of the panel
 				let header = "Mobile n°"+ wino.get('id') +" - " + wino.get('x') + " , "+wino.get('y');
+				
+				// We have to store the wino id, or it will send the last to UIeditWino
+				let winoId = wino.get('id');
+
 				mobilePanels.push(
 					<br/>,
 					<div style={winoColor}>&nbsp;</div>,
@@ -130,8 +134,7 @@ export default class MenuWinos extends React.Component {
 						<ListGroup fill>
 							<ListGroupItem>
 								<Button>Display</Button>
-								<Button onClick={() => this.props.UIeditWino(wino.get('id'))}>Edit</Button>
-								<Button onClick={() => this.props.delWino(wino.get('id'))}>Delete</Button>
+								<Button onClick={() => this.props.UIeditWino(winoId)}>Edit</Button>
 							</ListGroupItem>
 							<ListGroupItem>
 								<ListGroup fill>
@@ -210,7 +213,10 @@ export default class MenuWinos extends React.Component {
 					);
 				}
 
-				let header = "Anchor - " + wino.get('x') + " , "+wino.get('y');
+				let header = "Anchor n°" + wino.get('id') + " - " + wino.get('x') + " , "+wino.get('y');
+				
+				// We have to store the wino id, or it will send the last to UIeditWino
+				let winoId = wino.get('id');
 				anchorPanels.push(
 					<br/>,
 					<div style={winoColor}>&nbsp;</div>,
@@ -218,8 +224,7 @@ export default class MenuWinos extends React.Component {
 						<ListGroup fill>
 							<ListGroupItem>
 								<Button>Display</Button>
-								<Button onClick={() => this.props.UIeditWino(wino.get('id'))}>Edit</Button>
-								<Button onClick={() => this.props.delWino(wino.get('id'))}>Delete</Button>
+								<Button onClick={() => this.props.UIeditWino(winoId)}>Edit wino n°{wino.get('id')}</Button>
 							</ListGroupItem>
 							<ListGroupItem>
 								<ListGroup fill>

@@ -17,6 +17,10 @@ export function getRealWinoId(state, idToFind){
 	}
 }
 
+/**
+* Allows to push the wino state to the back-end server
+* @param state Map state to send
+*/
 function pushDataToBackEnd(state){
 
 	axios.post(PUSHWINO_URL,
@@ -101,9 +105,17 @@ export function toggleTypeWino(state, id){
 	return nextState;
 }
 
-export function editWino(state, id, params){
-	let nextWino = state.get(getRealWinoId(state, id)).merge(params);
-	let nextState = state.set(getRealWinoId(state, id), nextWino);
+/**
+* Set the new values of a wino, by merging with old ones
+* @param: state Map store the state of the application
+* @param: id integer Wino to modify
+* @param: newValues Map the new values
+*/
+export function editWino(state, newValues){
+	//Merge the winos with corresponding id
+	let nextWino = state.get(getRealWinoId(state, newValues.id)).merge(newValues);
+	//Insert it in the state
+	let nextState = state.set(getRealWinoId(state, newValues.id), nextWino);
 
 	pushDataToBackEnd(nextState);
 	return nextState;
@@ -234,8 +246,7 @@ export function UItoggleAdvanced(state) {
 
 export function UIeditWino(state, action, winos) {
 	let wino = winos.get(getRealWinoId(winos, action.id));
-	let nextState = state.set('editedWino', action.id);
-	nextState = nextState.set('colorPicker', wino.get('color'));
+	let nextState = state.set('editedWino', wino);
 	return nextState;
 }
 
@@ -245,7 +256,6 @@ export function UIvalidateEditWino(state) {
 }
 
 export function UIcolorChange(state, action) {
-	let nextState = state.set('colorPicker', action.color);
-	console.log(nextState.toJSON());
+	let nextState = state.setIn(['editedWino','color'], action.color.hex);
 	return nextState
 }

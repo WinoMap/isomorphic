@@ -6,7 +6,7 @@ const GETWINO_URL = 'http://localhost:8079/getWinos';
 export function getWinos() {
 	return {
 		type: 'GET_WINOS',
-		promise: request.get(GETWINO_URL)
+		promise: request.get(GETWINO_URL),
 	};
 }
 
@@ -14,28 +14,28 @@ export function editWino(id, params) {
 	return {
 		type: 'EDIT_WINO',
 		id,
-		params
+		params,
 	}
 }
 
 export function addWino(wino) {
 	return {
 		type: 'ADD_WINO',
-		wino
+		wino,
 	};
 }
 
 export function delWino(id) {
 	return {
 		type: 'DEL_WINO',
-		id
+		id,
 	};
 }
 
 export function toggleTypeWino(id){
 	return {
 		type: 'TOGGLE_TYPE_WINO',
-		id
+		id,
 	}
 }
 
@@ -43,13 +43,13 @@ export function toggleTypeWino(id){
 export function setOptions(options) {
 	return {
 		type: 'SET_OPTIONS',
-		options
+		options,
 	};
 }
 
 export function togglePrecision() {
 	return {
-		type: 'TOGGLE_PRECISION'
+		type: 'TOGGLE_PRECISION',
 	};
 }
 
@@ -57,21 +57,21 @@ export function setScale(firstPoint, secondPoint) {
 	return {
 		type: 'SET_SCALE',
 		firstPoint,
-		secondPoint
+		secondPoint,
 	};
 }
 
 export function setEventData(action) {
 	return {
 		type: 'SET_EVENT_DATA',
-		action
+		action,
 	};
 }
 
 export function eventStart(eventType) {
 	return {
 		type: 'EVENT_START',
-		eventType
+		eventType,
 	};
 }
 
@@ -84,15 +84,23 @@ export function UItoggleAdvanced() {
 }
 
 export function UIeditWino(id) {
+	console.log(id);
 	return {
 		type: 'UI_EDIT_WINO',
-		id
+		id,
 	};
 }
 
 export function UIcolorChange(color) {
 	return {
 		type: 'UI_COLOR_CHANGE',
-		color
+		color,
 	};
+}
+
+export function validateEditWino(newValues) {
+	return {
+		type: 'VALIDATE_EDIT_WINO',
+		newValues,
+	}
 }
