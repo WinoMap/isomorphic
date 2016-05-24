@@ -1,8 +1,9 @@
 import { Map, List, fromJS } from 'immutable';
 import { setWinos, addWino, delWino, editWino, toggleTypeWino,
-togglePrecision, setScale, setOptions, apiRequest,
+togglePrecision, setScale, setOptions, apiRequest, validateSettings,
 setEvent, setEventData, eventStart,
-UItoggleAdvanced, UIcolorChange, UIeditWino, UIvalidateEditWino } from './winoCore';
+UItoggleAdvanced, UIcolorChange, UIeditWino, UItoggleSettings,
+UIcloseEditWino } from './winoCore';
 
 function winos(state = List(), action, optionState){
   switch(action.type){
@@ -28,6 +29,8 @@ function options(state = Map(), action){
       return togglePrecision(state);
     case 'SET_SCALE':
       return setScale(state, action.firstPoint, action.secondPoint);
+    case 'VALIDATE_SETTINGS':
+      return validateSettings(state, action.newValues);
   }
   return state;
 }
@@ -55,7 +58,15 @@ function ui(state = Map(), action, winoState){
     case 'UI_COLOR_CHANGE':
       return UIcolorChange(state, action);
     case 'VALIDATE_EDIT_WINO':
-      return UIvalidateEditWino(state);
+      return UIcloseEditWino(state);
+    case 'UI_CANCEL_EDIT_WINO':
+      return UIcloseEditWino(state);
+    case 'UI_TOGGLE_SETTINGS':
+      return UItoggleSettings(state);
+    case 'VALIDATE_SETTINGS':
+      return UItoggleSettings(state);
+    case 'TOGGLE_TYPE_WINO':
+      return UIcloseEditWino(state);
   }
   return state;
 }

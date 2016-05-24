@@ -20,7 +20,6 @@ export const createD3Chart = function(el, props, state) {
   var svg = d3.select(el).append("svg")
                         .attr("id","plan")
                         .attr("viewBox","0 0 1000 1000")
-                        .attr("preserveAspectRatio","xMidYMid meet")
                         .on("mousedown", mouseDown)
                         .on("mouseup", mouseUp)
                         .on("click", mouseClick)
@@ -208,7 +207,6 @@ function manageMains(state){
               .attr("class", "mainCircle")
               .attr("r", 15)
               .style("opacity", 1)
-              .on("click", function(wino) { console.log('click'); state.setAnchorWino(wino.get('id')) });
   //ENTER & UPDATE
   main.attr("id", function(wino) { return "main"+wino.get('id') })
       .attr("cx", function(wino) { return wino.get('scaledX') })
@@ -282,7 +280,6 @@ function manageAnchors(state){
   var anchor = g.selectAll('.anchorCircle').data(state.anchorWinos, function(anchor) { return anchor.get('id') });
   //ENTER
   anchor.enter().append('circle')
-              .on("click", function(wino) { state.setMainWino(wino.get('id')) })
               .attr("class", "anchorCircle")
               .attr("r", 10)
               .style("opacity", 1);

@@ -61,33 +61,6 @@ export function setWinos(state, winos, options = Map({
   	return nextState;
 }
 
-
-
-/**
-* Add a new wino in the state.
-* @param: state Map store the state of the application
-
-*/
-export function addWino(state, wino) {
-	let nextState = state.push(wino);
-
-	pushDataToBackEnd(nextState);
-	return nextState;
-}
-
-
-/**
-* Deletes a wino from the state.
-* @param: state Map store the state of the application
-* @param: idToDelete integer id of the wino to delete
-*/
-export function delWino(state, idToDelete){
-	let nextState = state.delete(getRealWinoId(state, idToDelete));
-
-	pushDataToBackEnd(nextState);
-	return nextState;
-}
-
 /**
 * Set the state of a wino as mobile or anchor.
 * @param: state Map store the state of the application
@@ -173,6 +146,16 @@ function generateScaleMap(firstPoint, secondPoint){
 }
 
 
+/**
+* Define the settings in the option tree
+* @param: state Map store the state of the options
+* @param: newSettings Map the enw settings
+*/
+export function validateSettings(state, newSettings) {
+	var nextState = state.merge(newSettings);
+  	return nextState;
+}
+
 //=== EVENTS
 
 
@@ -250,7 +233,7 @@ export function UIeditWino(state, action, winos) {
 	return nextState;
 }
 
-export function UIvalidateEditWino(state) {
+export function UIcloseEditWino(state) {
 	let nextState = state.set('editedWino', undefined);
 	return nextState;
 }
@@ -258,4 +241,16 @@ export function UIvalidateEditWino(state) {
 export function UIcolorChange(state, action) {
 	let nextState = state.setIn(['editedWino','color'], action.color.hex);
 	return nextState
+}
+
+/**
+* Display or hide the settings menu elements
+* @param: state Map store the state of the application
+*/
+export function UItoggleSettings(state) {
+	if(state.get('settingsPanel') == true) {
+		return state.set('settingsPanel', false);
+	} else {
+		return state.set('settingsPanel', true);
+	}
 }

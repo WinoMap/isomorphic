@@ -83,6 +83,12 @@ export function UItoggleAdvanced() {
 	};
 }
 
+export function UItoggleSettings() {
+	return {
+		type: 'UI_TOGGLE_SETTINGS',
+	};
+}
+
 export function UIeditWino(id) {
 	console.log(id);
 	return {
@@ -98,9 +104,28 @@ export function UIcolorChange(color) {
 	};
 }
 
-export function validateEditWino(newValues) {
+export function validateEditWino(newValues = {}) {
 	return {
 		type: 'VALIDATE_EDIT_WINO',
 		newValues,
+	}
+}
+
+export function validateSettings(newValues = {}) {
+	return {
+		type: 'VALIDATE_SETTINGS',
+		newValues,
+	}
+}
+
+export function cancelSettings(newValues = {}) {
+	return {
+		type: 'UI_TOGGLE_SETTINGS',
+	}
+}
+
+export function cancelEditWino(newValues = {}) {
+	return {
+		type: 'UI_CANCEL_EDIT_WINO',
 	}
 }
