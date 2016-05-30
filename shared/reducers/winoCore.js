@@ -30,7 +30,7 @@ function pushDataToBackEnd(state){
 			stateToSend.deleteIn([key,'temp']);
 		}
 	}*/
-
+	var stateToSend = state;
 	axios.post(PUSHWINO_URL,
     	JSON.stringify(stateToSend.toJSON()), {
       headers: { 
