@@ -24,8 +24,8 @@ export function getRealWinoId(state, idToFind){
 function pushDataToBackEnd(state){
 
 	// Remove the temp datas before sending them
-	/*var stateToSend = state;
-	for(key in state.toJSON()){
+	var stateToSend = state;
+	/*for(key in state.toJSON()){
 		if(stateToSend.get(key).get('temp') != undefined){
 			stateToSend.deleteIn([key,'temp']);
 		}

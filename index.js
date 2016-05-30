@@ -1,5 +1,8 @@
 'use strict';
 require('babel/register')({});
+require.extensions['.scss'] = () => {
+  return;
+};
 
 var server = require('./server');
 const PORT = process.env.PORT || 3000;

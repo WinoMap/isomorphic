@@ -11,34 +11,20 @@ import {Map, List} from 'immutable';
 import { applyMiddleware } from 'redux';
 import promiseMiddleware from './shared/lib/promiseMiddleware'
 
+import * as styles from './shared/res/css/style.scss';
+import style from './shared/res/css/style.scss';
+
 
 const app = express();
 app.use((req, res) => {
+  // const css = []; // CSS for all rendered React components
+  // const context = { insertCss: (styles) => css.push(styles._getCss()) };
+  // const css = style._getCss();
+  // console.log(css);
+
+
   const location = createLocation(req.url);
   const store = applyMiddleware(promiseMiddleware)(createStore)(reducer);
-
-  var winos = List.of(
-  Map({
-    id: 1,
-    x:0,
-    y:0,
-    radius: Map({2: 0}),
-    main: false
-  }),
-  Map({
-    id: 2,
-    x:0,
-    y:0,
-    radius: Map({1: 0}),
-    main: true
-  }));
-  
-  store.dispatch({
-    type: 'SET_WINOS',
-    winos: winos
-  });
-
-  console.log('test');
 
   match({ routes, location }, (err, redirectLocation, renderProps) => {
     if (err) { 
@@ -60,6 +46,7 @@ app.use((req, res) => {
     <!DOCTYPE html>
     <html>
       <head>
+        <meta name="mobile-web-app-capable" content="yes">
         <meta charset="utf-8">
         <title>OpenWino Map</title>
         <script type="application/javascript">
@@ -67,8 +54,7 @@ app.use((req, res) => {
         </script>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-
-        </head>
+      </head>
       <body>
         <div id="react-view">${componentHTML}</div>
         <script type="application/javascript" src="/bundle.js"></script>

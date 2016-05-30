@@ -30,7 +30,12 @@ module.exports = {
         ]
       },
       { 
-        test: /\.css$/, loader: "style-loader!css-loader"
+        test: /\.scss$/,
+        loaders: [
+          'isomorphic-style-loader',
+          'css-loader?modules&localIdentName=[name]_[local]_[hash:base64:3]',
+          'postcss-loader'
+        ]
       }
     ],
 
@@ -57,6 +62,6 @@ module.exports = {
     proxy: {
       '*': 'http://127.0.0.1:' + (process.env.PORT || 3000)
     },
-    host: '127.0.0.1'
+    host: '0.0.0.0'
   }
 };
