@@ -101,34 +101,6 @@ export const updateD3Chart = function(el, state) {
     managePriority(state);
   }
 
-  //Circle or Point mode
-  if(state.options.get('precisionMode') == 'point'){
-    //Point mode
-
-    d3.selectAll('.mainCircle').transition().style("opacity",1);
-
-    //Clear the Circle mode elements
-    d3.selectAll('.anchorCircle').transition().style("opacity",0);
-    d3.selectAll('.areaInnerCircle').transition().style("opacity",0);
-    d3.selectAll('.areaOuterCircle').transition().style("opacity",0);
-    d3.selectAll('.intersectionArea').transition().style("opacity",0);
-
-  }else{
-    //Circle mode
-    
-    d3.selectAll('.mainCircle').transition().style("opacity",0);
-
-    //Clear the Point mode elements
-    d3.selectAll('.anchorCircle').transition().style("opacity",1);
-    d3.selectAll('.areaInnerCircle').transition().style("opacity",OPACITY.INNERAREA);
-    d3.selectAll('.areaOuterCircle').transition().style("opacity",OPACITY.OUTERAREA);
-    d3.selectAll('.intersectionArea').transition().style("opacity",OPACITY.INTERSECTION);
-
-
-
-    //TODO : 1 intersection circle for each wino
-  }
-
 
   //Toolbar tools
   if(state.event.size != 0){
@@ -200,27 +172,32 @@ export const updateD3Chart = function(el, state) {
 function manageMains(state){
   //Manages the main winos
   var g = d3.select('#inside').selectAll('.main');
-  var main = g.selectAll('.mainCircle').data(state.mainWinos, function(main) { return main.get('id') });
-  
-  //EXIT
-  main.exit().remove();
+  var main = g.selectAll('.mainContainer').data(state.mainWinos, function(main) { return main.get('id') });
+
 
   //ENTER
-  main.enter().append('circle')
-              .attr("class", "mainCircle")
-              .attr("r", 15)
-              .style("opacity", 1)
+  var container = main.enter().append('g')
+                              .attr("id", function(wino) { return "container"+wino.get('id') })
+                              .attr("class", "mainContainer");
+
+  container.append('circle')
+          .attr("class", "mainCircle")
+          .attr("r", 15)
+          .style("opacity", 1);
+
+  container.append('g')
+              .attr('class', function(wino){ return 'areaInner'+wino.get('id')});
+  container.append('g')
+              .attr('class', function(wino){ return 'areaOuter'+wino.get('id')});
+
   //ENTER & UPDATE
-  main.attr("id", function(wino) { return "main"+wino.get('id') })
+  main.select(".mainCircle")
+      .attr("id", function(wino) { return "main"+wino.get('id') })
       .attr("cx", function(wino) { return wino.get('scaledX') })
       .attr("cy", function(wino) { return wino.get('scaledY') });
 
-  main.enter().append('g')
-              .attr('class', function(wino){ return 'areaInner'+wino.get('id')});
-  main.enter().append('g')
-              .attr('class', function(wino){ return 'areaOuter'+wino.get('id')});
-
-  
+  //EXIT
+  main.exit().remove();
 }
 
 /**

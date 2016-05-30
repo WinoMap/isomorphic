@@ -87,21 +87,6 @@ export function toggleTypeWino(state, id){
 }
 
 /**
-* Change if a wino is displayed or not.
-* @param: state Map store the state of the winos
-* @param: id integer of the wino to define.
-*/
-export function toggleTypeWino(state, id){
-	let nextState = state;
-	if(state.getIn([getRealWinoId(state,id),'local','displayed']) == false){
-		nextState = nextState.setIn([getRealWinoId(state,id), 'local', 'displayed'], true);
-	} else {
-		nextState = nextState.setIn([getRealWinoId(state,id), 'local', 'displayed'], false);
-	}
-	return nextState;
-}
-
-/**
 * Set the new values of a wino, by merging with old ones
 * @param: state Map store the state of the winos
 * @param: id integer Wino to modify
@@ -177,6 +162,25 @@ function generateScaleMap(firstPoint, secondPoint){
 export function validateSettings(state, newSettings) {
 	var nextState = state.merge(newSettings);
   	return nextState;
+}
+
+
+/**
+* Change if a wino is displayed or not.
+* @param: state Map store the state of the winos
+* @param: id integer of the wino to define.
+*/
+export function toggleDisplayWino(state, id){
+	let nextState = state;
+	if(state.getIn(['displayed', id]) == undefined 
+		|| state.getIn(['displayed', id]) == false){
+		nextState = nextState.setIn(['displayed', id], true);
+	} else {
+		nextState = nextState.setIn(['displayed', id], false);
+	}
+	console.log(state.toJSON());
+	console.log(nextState.toJSON());
+	return nextState;
 }
 
 //=== EVENTS

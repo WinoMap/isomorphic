@@ -223,7 +223,7 @@ export default class MenuWinos extends React.Component {
 					<Panel header={header} eventKey={i}>
 						<ListGroup fill>
 							<ListGroupItem>
-								<Button>Display</Button>
+								<Button onClick={() => this.props.toggleDisplayWino(winoId)}>Display</Button>
 								<Button onClick={() => this.props.UIeditWino(winoId)}>Edit wino n°{wino.get('id')}</Button>
 							</ListGroupItem>
 							<ListGroupItem>

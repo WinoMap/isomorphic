@@ -27,7 +27,9 @@ export default class Plan extends React.Component {
   getMainWinos() {
     let result = [];
     for(var i=0; i<this.getWinos().size; i++){
-      if(this.getWinos().get(i).get('main') == true){
+      var wino = this.getWinos().get(i);
+      if(wino.get('main') == true
+        && this.getOptions().getIn(['displayed', wino.get('id')]) == true ){
         result.push(this.getWinos().get(i));
       }
     }
@@ -37,7 +39,10 @@ export default class Plan extends React.Component {
   getAnchorWinos() {
     let result = [];
     for(var i=0; i<this.getWinos().size; i++){
-      if(this.getWinos().get(i).get('main') == false){
+      var wino = this.getWinos().get(i);
+      if(wino.get('main') == false
+        && (this.getOptions().getIn(['displayed', wino.get('id')]) == false
+          || this.getOptions().getIn(['displayed', wino.get('id')]) == undefined)){
         result.push(this.getWinos().get(i));
       }
     }
