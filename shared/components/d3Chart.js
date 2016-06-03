@@ -3,33 +3,30 @@ import d3 from 'd3';
 import $ from 'jquery';
 
 const OPACITY = {
-  INNERAREA: 0.05,
-  OUTERAREA: 0.05,
-  INTERSECTION: 0.25
+  OUTERAREA: 0.25,
+  INTERSECTION: 0.5
 };
 
 const COLORS = ['red','blue','green','pink','orange','yellow'];
 
 // d3Chart.js
 export const createD3Chart = function(el, props, state) {
-  console.log("--- State ---");
-  console.log(state);
 
 
   //Initialise the svg element
   var svg = d3.select(el).append("svg")
-                        .attr("id","plan")
-                        .attr("height", "100%")
-                        .attr("width", "100%")
-                        .attr("viewBox","0 0 1000 1000")
-                        .attr("preserveAspectRatio","xMidYMid slice")
-                        .on("mousedown", mouseDown)
-                        .on("mouseup", mouseUp)
-                        .on("click", mouseClick)
-                        .append("g")
-                          .call(d3.behavior.zoom().scaleExtent([1, 3]).on("zoom", zoom))
-                        .append("g")
-                          .attr("id", "inside");
+    .attr("id","plan")
+    .attr("height", "100%")
+    .attr("width", "100%")
+    .attr("viewBox","0 0 1000 1000")
+    .attr("preserveAspectRatio","xMidYMid slice")
+    .on("mousedown", mouseDown)
+    .on("mouseup", mouseUp)
+    .on("click", mouseClick)
+    .append("g")
+      .call(d3.behavior.zoom().scaleExtent([1, 3]).on("zoom", zoom))
+    .append("g")
+      .attr("id", "inside");
 
 
   //Click listenners
@@ -50,36 +47,36 @@ export const createD3Chart = function(el, props, state) {
     $("#inside").load(backgroundPlan, function(){
       d3.select('#inside').append('g').attr('class', 'main');
       d3.select('#inside').append('g').attr('class', 'anchor');
-      d3.select('#inside').append('g').attr('class', 'areaInner');
-      d3.select('#inside').append('g').attr('class', 'areaOuter');
+      d3.select('#inside').append('g').attr('class', 'gradient');
       d3.select('#inside').append('g').attr('class', 'intersection');
 
       //Prepare the scale tools helpers
       d3.select("#inside").append("circle")
-                          .attr("class", "cursor")
-                          .attr("id", "i1")
-                          .attr("cx", 0)
-                          .attr("cy", 0)
-                          .attr("r", 0);
+        .attr("class", "cursor")
+        .attr("id", "i1")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", 0);
+
       d3.select("#inside").append("circle")
-                          .attr("id", "i2")
-                          .attr("class", "cursor")
-                          .attr("cx", 0)
-                          .attr("cy", 0)
-                          .attr("r", 0);
+        .attr("id", "i2")
+        .attr("class", "cursor")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", 0);
 
       //Prepare the diagonal to make it visible later, to help to place the second point when using scale tool.
       d3.select('#inside').append('line')
-                        .attr('id', 'diagonalHelper')
-                        .attr('x1', 0)
-                        .attr('y1', 0)
-                        .attr('x2', 0)
-                        .attr('y2', 0)
-                        .attr('stroke-width', 2)
-                        .attr('stroke-linecap', 'round')
-                        .attr('stroke-dasharray', '15,6')
-                        .attr('stroke', 'green')
-                        .style('opacity', 0);
+        .attr('id', 'diagonalHelper')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', 0)
+        .attr('y2', 0)
+        .attr('stroke-width', 2)
+        .attr('stroke-linecap', 'round')
+        .attr('stroke-dasharray', '15,6')
+        .attr('stroke', 'green')
+        .style('opacity', 0);
 
     });
   });
@@ -98,6 +95,7 @@ export const updateD3Chart = function(el, state) {
   if(state.isScaleDefined){
     manageMains(state);
     manageAnchors(state);
+    manageGradients(state);
     managePriority(state);
   }
 
@@ -116,39 +114,39 @@ export const updateD3Chart = function(el, state) {
 
         //If first point is already defined
         d3.select('#i1').attr('cx', firstX)
-                        .attr('cy', firstY)
-                        .attr('r', 4)
-                        .style("opacity",1);
+          .attr('cy', firstY)
+          .attr('r', 4)
+          .style("opacity",1);
 
         
         //Place the line to the clicked point for better transition.
         d3.select('#diagonalHelper').attr('x1', firstX)
-                                    .attr('y1', firstY)
-                                    .attr('x2', firstX)
-                                    .attr('y2', firstY)
-                                    .style('opacity', 0.2);
+          .attr('y1', firstY)
+          .attr('x2', firstX)
+          .attr('y2', firstY)
+          .style('opacity', 0.2);
 
         if(state.event.get('data').get('secondPoint') != ''){
           //If second point is already defined
 
           //Redraw the diagonal without transition
           d3.select('#diagonalHelper').attr('x1', firstX-400)
-                                      .attr('y1', firstY-400)
-                                      .attr('x2', 400+firstX)
-                                      .attr('y2', 400+firstY)
+            .attr('y1', firstY-400)
+            .attr('x2', 400+firstX)
+            .attr('y2', 400+firstY)
 
           d3.select('#i2').attr('cx', state.event.get('data').get('secondPoint').get(0))
-                          .attr('cy', state.event.get('data').get('secondPoint').get(1))
-                          .attr('r', 4)
-                          .style("opacity",1);
+            .attr('cy', state.event.get('data').get('secondPoint').get(1))
+            .attr('r', 4)
+            .style("opacity",1);
         }else{
           //Draw the diagonal with transition
           d3.select('#diagonalHelper').transition()
-                                      .duration(300)
-                                      .attr('x1', firstX-400)
-                                      .attr('y1', firstY-400)
-                                      .attr('x2', 400+firstX)
-                                      .attr('y2', 400+firstY)
+            .duration(300)
+            .attr('x1', firstX-400)
+            .attr('y1', firstY-400)
+            .attr('x2', 400+firstX)
+            .attr('y2', 400+firstY)
         }
 
       }else{
@@ -177,24 +175,25 @@ function manageMains(state){
 
   //ENTER
   var container = main.enter().append('g')
-                              .attr("id", function(wino) { return "container"+wino.get('id') })
-                              .attr("class", "mainContainer");
+    .attr("id", function(wino) { return "container"+wino.get('id') })
+    .attr("class", "mainContainer");
 
   container.append('circle')
-          .attr("class", "mainCircle")
-          .attr("r", 15)
-          .style("opacity", 1);
+    .attr("class", "mainCircle")
+    .attr("r", 15)
+    .attr("fill", function(wino) { return wino.get('color')})
+    .style("opacity", 1);
 
   container.append('g')
-              .attr('class', function(wino){ return 'areaInner'+wino.get('id')});
+    .attr('class', function(wino){ return 'areaInner'+wino.get('id')});
   container.append('g')
-              .attr('class', function(wino){ return 'areaOuter'+wino.get('id')});
+    .attr('class', function(wino){ return 'areaOuter'+wino.get('id')});
 
   //ENTER & UPDATE
   main.select(".mainCircle")
-      .attr("id", function(wino) { return "main"+wino.get('id') })
-      .attr("cx", function(wino) { return wino.get('scaledX') })
-      .attr("cy", function(wino) { return wino.get('scaledY') });
+    .attr("id", function(wino) { return "main"+wino.get('id') })
+    .attr("cx", function(wino) { return wino.get('scaledX') })
+    .attr("cy", function(wino) { return wino.get('scaledY') });
 
   //EXIT
   main.exit().remove();
@@ -214,93 +213,114 @@ function manageAnchors(state){
 
     var main = state.mainWinos[key];
     intersectionDatas[main.get('id')] = {x: [], y: [], r: []};
-/*
-    //Inner area
-    var g = d3.select('#inside').selectAll('.areaInner'+main.get('id'));
-    var areaInner = g.selectAll('.areaInnerCircle').data(state.anchorWinos, function(anchor) { return anchor.get('id') });
-    //ENTER
-    areaInner.enter().append('circle')
-            .attr("class", "areaInnerCircle")
-            .style("opacity", OPACITY.INNERAREA);
-    //ENTER & UPDATE
-    areaInner.attr("id", function(wino) { return 'areaInner'+main.get('id')+'-'+wino.get('id') })
-            .attr("cx", function(wino) { return wino.get('scaledX') })
-            .attr("cy", function(wino) { return wino.get('scaledY') })
-            .attr("r", function(wino) { return wino.getIn(['scaledRadius', ''+main.get('id')])*state.precision });
-    //EXIT
-    areaInner.exit().remove();
-*/
+
     //Outer area
     var g = d3.select('#inside').selectAll('.areaOuter'+main.get('id'));
     var areaOuter = g.selectAll('.areaOuterCircle').data(state.anchorWinos, function(anchor) { return anchor.get('id') });
     //ENTER
     areaOuter.enter().append('circle')
-            .attr("class", "areaOuterCircle")
-            .style("opacity", OPACITY.OUTERAREA);
+      .attr("class", "areaOuterCircle")
+      .style("opacity", OPACITY.OUTERAREA)
+
     //ENTER & UPDATE
-    areaOuter.attr("id", function(wino) { return "areaOuter"+main.get('id')+"-"+wino.get('id') })
-            .attr("cx", function(wino) { intersectionDatas[main.get('id')]['x'].push(wino.get('scaledX'));
-                                        return wino.get('scaledX'); })
-            .attr("cy", function(wino) { intersectionDatas[main.get('id')]['y'].push(wino.get('scaledY'));
-                                        return wino.get('scaledY'); })
-            .attr("r", function(wino) { intersectionDatas[main.get('id')]['r'].push(wino.getIn(['radius',''+main.get('id')]))
-                                        return wino.getIn(['scaledRadius',''+main.get('id')])});
+    var circle = areaOuter.attr("id", function(wino) { return "areaOuter"+main.get('id')+"-"+wino.get('id') })
+      .attr("cx", function(wino) { intersectionDatas[main.get('id')]['x'].push(wino.get('scaledX'));
+                                  return wino.get('scaledX'); })
+      .attr("cy", function(wino) { intersectionDatas[main.get('id')]['y'].push(wino.get('scaledY'));
+                                  return wino.get('scaledY'); })
+      .attr("r", function(wino) { intersectionDatas[main.get('id')]['r'].push(wino.getIn(['scaledRadius',''+main.get('id')]))
+                                  return wino.getIn(['scaledRadius',''+main.get('id')])})
+      .attr("fill", function(wino) { return "url(#radial-gradient"+main.get('id')+")"});
+
     //EXIT
     areaOuter.exit().remove();
   }
 
   var intersectList = [];
   for(var key in state.mainWinos){
-    intersectList.push({id: state.mainWinos[key].get('id'), inter: generateIntersections(intersectionDatas[state.mainWinos[key].get('id')])});
+		  intersectList.push({color: state.mainWinos[key].get('color'),
+				  id: state.mainWinos[key].get('id'),
+				  inter: generateIntersections(intersectionDatas[state.mainWinos[key].get('id')])});
   }
-  //manageIntersections(intersectList);
+  //console.log(intersectList)
+  manageIntersections(intersectList);
 
-  //Manages the anchor winos after the circles so we can click on it
+  // Manages the anchor winos after the circles so we can click on it
   var g = d3.select('#inside').selectAll('.anchor');
   var anchor = g.selectAll('.anchorCircle').data(state.anchorWinos, function(anchor) { return anchor.get('id') });
-  //ENTER
+  // ENTER
   anchor.enter().append('circle')
               .attr("class", "anchorCircle")
               .attr("r", 10)
+              .attr("fill", function(wino) { return wino.get('color')})
               .style("opacity", 1);
-  //ENTER & UPDATE
+  // ENTER & UPDATE
   anchor.attr("id", function(wino) { return "anchor"+wino.get('id') })
         .attr("cx", function(wino) { return wino.get('scaledX') })
         .attr("cy", function(wino) { return wino.get('scaledY') })
-  //EXIT
+  // EXIT
   anchor.exit().remove();
 
 
 }
 
+function manageGradients(state) {
+  var g = d3.select('#inside').selectAll('.gradient');
+  var gradient = g.selectAll('.radialGradient').data(state.mainWinos, function(anchor) { return anchor.get('id') });
+
+  // enter
+  var stops = gradient.enter().append("radialGradient")
+    .attr("class", "radialGradient")
+    .attr("id", function(wino) { return "radial-gradient" + wino.get('id') });
+
+  stops.append("stop")
+    .attr('id', "stop1")
+    .attr("offset", "95%")
+    .attr("stop-opacity", 0.1);
+
+  stops.append("stop")
+    .attr('id', "stop2")
+    .attr("offset", "100%")
+    .attr("stop-opacity", 1);
+
+  // Update
+  gradient.select("#stop2")
+    .attr("stop-color", function(wino) { return wino.get("color")});
+  gradient.select("#stop1")
+    .attr("stop-color", function(wino) { return wino.get("color")});
+
+
+  //EXIT
+  gradient.exit().remove();
+
+}
+
 /**
 * Draw the intersections of the area circles on the screen
-* /!\ Warning! The of the winos may corrupt the intersections : process in order of the X datas.
+* /!\ Warning! The order of the winos may corrupt the intersections : process in order of the X datas.
 * TODO: manage the order of the datas
 * @param intersectionPoints array the intersections datas.
 */
 function manageIntersections(intersectionPoints){
   if(intersectionPoints){
-    var currentColor = -1;
     //Outer area
     var g = d3.select('#inside').selectAll('.intersection');
-    console.log('---');
-    var intersection = g.selectAll('.intersectionArea').data(intersectionPoints, function(d) { console.log(d.id);return d.id });
+	var intersection = g.selectAll('.intersectionArea').data(intersectionPoints, function(d) { /*console.log(d.id)*/;return d.id });
 
     //ENTER
     intersection.enter().append('path')
                         .attr('class','intersectionArea');
 
     //ENTER & UPDATE
-    intersection.attr('d', function(d) {
-            return "M" + d.inter[2][1] + "," + d.inter[2][3] + "A" + d.inter[3] + "," + d.inter[3] +
-              " 0 0,1 " + d.inter[0][0] + "," + d.inter[0][2] + "A" + d.inter[4] + "," + d.inter[4] +
-              " 0 0,1 " + d.inter[1][0] + "," + d.inter[1][2] + "A" + d.inter[5] + "," + d.inter[5] +
-              " 0 0,1 " + d.inter[2][1] + "," + d.inter[2][3];})
-        .style('opacity', OPACITY.INTERSECTION)
-        .style('fill', function(d){
-          currentColor++; return COLORS[currentColor];
-        });
+	intersection.attr('d', function(d) {
+			if(d.inter){
+            	return "M" + d.inter[2][1] + "," + d.inter[2][3] + "A" + d.inter[3] + "," + d.inter[3] +
+              	" 0 0,1 " + d.inter[0][0] + "," + d.inter[0][2] + "A" + d.inter[4] + "," + d.inter[4] +
+              	" 0 0,1 " + d.inter[1][0] + "," + d.inter[1][2] + "A" + d.inter[5] + "," + d.inter[5] +
+              	" 0 0,1 " + d.inter[2][1] + "," + d.inter[2][3]
+			}})
+		.style('opacity', OPACITY.INTERSECTION)
+        .style('fill', function(d){ return d.color });
 
     //EXIT
     intersection.exit().remove();

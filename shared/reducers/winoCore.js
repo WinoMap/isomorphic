@@ -1,7 +1,8 @@
 import {List, Map, toJSON} from 'immutable';
 import axios from 'axios';
 
-const PUSHWINO_URL = 'http://localhost:8079/pushWinos';
+// Adress to change when HOSTING
+const BACKEND_URL = 'http://192.168.77.210:8079';
 
 /**
 * Return the position in the "winos" list of a wino
@@ -22,16 +23,9 @@ export function getRealWinoId(state, idToFind){
 * @param state Map state to send
 */
 function pushDataToBackEnd(state){
-
-	// Remove the temp datas before sending them
-	/*var stateToSend = state;
-	for(key in state.toJSON()){
-		if(stateToSend.get(key).get('temp') != undefined){
-			stateToSend.deleteIn([key,'temp']);
-		}
-	}*/
 	var stateToSend = state;
-	axios.post(PUSHWINO_URL,
+	console.log(state);
+	axios.post(BACKEND_URL+'/pushWinos',
     	JSON.stringify(stateToSend.toJSON()), {
       headers: { 
         "Content-Type": "application/x-www-form-urlencoded"
@@ -39,6 +33,25 @@ function pushDataToBackEnd(state){
     }).then(function(response) {
         console.log(response);
     });
+}
+
+
+/**
+* Allows to push the wino state to the back-end server
+* @param state Map state to send
+*/
+function pushSettingsToBackEnd(state){
+	var stateToSend = state;
+	axios.post(BACKEND_URL+'/pushState',
+    	JSON.stringify(stateToSend.toJSON()), {
+     		 headers: { 
+        		"Content-Type": "application/x-www-form-urlencoded"
+      		}
+    }).then(function(response) {
+        console.log(response);
+    }).catch(function (response) {
+    	console.log(response);
+  	});
 }
 
 /**
@@ -161,7 +174,8 @@ function generateScaleMap(firstPoint, secondPoint){
 */
 export function validateSettings(state, newSettings) {
 	var nextState = state.merge(newSettings);
-  	return nextState;
+	pushSettingsToBackEnd(nextState);	
+	return nextState;
 }
 
 
@@ -178,8 +192,6 @@ export function toggleDisplayWino(state, id){
 	} else {
 		nextState = nextState.setIn(['displayed', id], false);
 	}
-	console.log(state.toJSON());
-	console.log(nextState.toJSON());
 	return nextState;
 }
 

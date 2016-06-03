@@ -7,7 +7,7 @@ export default function promiseMiddleware() {
 		const REQUEST = type + '_REQUEST';
 		const FAILURE = type + '_FAILURE';
 
-		//next({...rest, type: SUCCESS});
+		//	next({...rest, type: SUCCESS});
 		return promise
 			.then(res => {
 				next({ ...rest, res, type: SUCCESS});
