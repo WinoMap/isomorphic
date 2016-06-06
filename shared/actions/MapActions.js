@@ -1,7 +1,5 @@
 import request from 'axios';
-
-// Change this to the BackEnd URL when Hosting
-const GETWINO_URL = 'http://192.168.77.210:8079/getWinos';
+import { GETWINO_URL } from "../../URL"
 
 //Winos actions
 export function getWinos() {

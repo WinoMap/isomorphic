@@ -9,36 +9,12 @@ import { Provider } from 'react-redux';
 import reducer from './shared/reducers/mapReducer';
 import {Map, List} from 'immutable';
 import { applyMiddleware } from 'redux';
-import promiseMiddleware from './shared/lib/promiseMiddleware'
-
+import promiseMiddleware from './shared/lib/promiseMiddleware';
 
 const app = express();
 app.use((req, res) => {
   const location = createLocation(req.url);
   const store = applyMiddleware(promiseMiddleware)(createStore)(reducer);
-
-  var winos = List.of(
-  Map({
-    id: 1,
-    x:0,
-    y:0,
-    radius: Map({2: 0}),
-    main: false
-  }),
-  Map({
-    id: 2,
-    x:0,
-    y:0,
-    radius: Map({1: 0}),
-    main: true
-  }));
-  
-  store.dispatch({
-    type: 'SET_WINOS',
-    winos: winos
-  });
-
-  console.log('test');
 
   match({ routes, location }, (err, redirectLocation, renderProps) => {
     if (err) { 

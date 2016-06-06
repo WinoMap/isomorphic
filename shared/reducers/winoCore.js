@@ -1,8 +1,6 @@
 import {List, Map, toJSON} from 'immutable';
 import axios from 'axios';
-
-// Adress to change when HOSTING
-const BACKEND_URL = 'http://192.168.77.210:8079';
+import { BACKEND_URL } from "../../URL"
 
 /**
 * Return the position in the "winos" list of a wino
