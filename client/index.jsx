@@ -22,7 +22,7 @@ const store = applyMiddleware(promiseMiddleware)(createStore)(reducer, immutable
 
 setInterval(() => {
 	store.dispatch(getWinos());
-}, 10000);
+}, 1000);
 
 render(
   <Provider store={store}>

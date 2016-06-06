@@ -1,10 +1,23 @@
 TODO
 -----
-Manage intersections 	--								-- Partly done (order bug)
-Raspy					--								-- Data to back done 
-Send config to back		--								-- 
+Manage intersections 	--								-- Partly done (order bug)	
 Docs					--	vendredi	17 juin 2016	-- 
-Rapport					--	mardi		21 juin 2016	-- 
+Rapport					--	mardi		14 juin 2016	-- 
 Slides					--	mardi		21 juin 2016	-- 
 fiches PPP				--	mercredi	22 juin 2016	-- 
-asynchrone après 2 minutes
+
+
+virtual box prod
+enlever IP en dur dans le JS
+debian
+
+
+doc maintenance != doc technique
+
+Manuel de réalisation de SVG adapté
+
+adapter nouveaux plans
+
+Rajouter paramètre fréquence des requêtes
+
+ajouter précision
